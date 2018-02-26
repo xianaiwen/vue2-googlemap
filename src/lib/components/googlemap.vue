@@ -18,22 +18,26 @@ export default {
       type: [Array, Object],
       required: true
     },
-    clickableIcons: { // 地图原生图标能否被点击显示poi信息
+    clickableIcons: {
+      // 地图原生图标能否被点击显示poi信息
       type: Boolean,
-      default: true,
+      default: true
     },
-    disableDefaultUI: { // 禁用原生控件
+    disableDefaultUI: {
+      // 禁用原生控件
       type: Boolean,
-      default: false,
+      default: false
     },
-    disableDoubleClickZoom: { // 禁用双击放大
+    disableDoubleClickZoom: {
+      // 禁用双击放大
       type: Boolean,
-      default: false,
+      default: false
     },
-    draggable: { // 禁用拖拽
+    draggable: {
+      // 禁用拖拽
       type: Boolean,
-      default: true,
-      },
+      default: true
+    },
     zoom: {
       type: Number,
       default: 13
@@ -56,14 +60,11 @@ export default {
   mounted() {
     this.createMap();
   },
-  // watch: {
-  //   [`${this.$props.zoom}`]: (newV) => {
-  //     this.$map.setZoom(newV)
-  //   }
-  // },
+  destroyed() {
+    google.maps.event.clearInstanceListeners(this.$map);
+  },
   methods: {
     createMap() {
-      console.log(this.$props)
       const options = {};
       for (let key in this.$props) {
         if (this.$props[key] !== undefined) {
@@ -72,7 +73,7 @@ export default {
               ? { lat: this.$props[key][0], lng: this.$props[key][1] }
               : this.$props[key];
             Object.assign(options, { center });
-          } else if (key === "controls" && !this.$props['disableDefaultUI']) {
+          } else if (key === "controls" && !this.$props["disableDefaultUI"]) {
             const controlsArray = [
               "zoom",
               "mapType",
@@ -82,14 +83,14 @@ export default {
               "fullscreen"
             ];
             controlsArray.forEach(c => {
-              if (this.$props['controls'].indexOf(c) !== -1) {
+              if (this.$props["controls"].indexOf(c) !== -1) {
                 Object.assign(options, { [`${c}Control`]: true });
               } else {
                 Object.assign(options, { [`${c}Control`]: false });
               }
             });
           } else {
-            Object.assign(options, {[`${key}`]: this.$props[key]})
+            Object.assign(options, { [`${key}`]: this.$props[key] });
           }
         }
       }
@@ -103,12 +104,14 @@ export default {
             c.$emit("mapReady", this.$map);
           });
         this.registerEvents();
-        this.$watch('zoom', nv => {
-          this.$map.setZoom(nv)
-        })
-        this.$watch('center', nv => {
-          this.$map.setCenter(Array.isArray(nv) ? { lat: nv[0], lng: nv[1] } : nv);
-        })
+        this.$watch("zoom", nv => {
+          this.$map.setZoom(nv);
+        });
+        this.$watch("center", nv => {
+          this.$map.setCenter(
+            Array.isArray(nv) ? { lat: nv[0], lng: nv[1] } : nv
+          );
+        });
       });
     },
     registerEvents() {

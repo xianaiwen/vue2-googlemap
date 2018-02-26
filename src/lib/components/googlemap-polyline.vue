@@ -9,7 +9,29 @@ export default {
     return {};
   },
   props: {
-    path: Array
+    path: Array,
+    clickable: {
+      type: Boolean,
+      default: true
+    },
+    draggable: {
+      type: Boolean,
+      default: false
+    },
+    editable: {
+      type: Boolean,
+      default: false
+    },
+    geodesic: Boolean,
+    strokeColor: String,
+    strokeOpacity: String,
+    strokeWeight: String,
+    visible: {
+      type: Boolean,
+      default: true
+    },
+    zIndex: Number,
+    events: Object
   },
   mounted() {
     this.$map = this.$map || this.$parent.$map;
@@ -22,13 +44,44 @@ export default {
       });
     }
   },
+  destroyed() {
+    this.$polyline.setMap(null);
+    google.maps.event.clearInstanceListeners(this.$polyline);
+  },
   methods: {
     createPolyline() {
-      const polyline = new google.maps.Polyline({
-        path: this.path
+      const options = {};
+      for (let key in this.$props) {
+        if (this.$props[key] !== undefined) {
+          Object.assign(options, { [key]: this.$props[key] });
+        }
+      }
+      ["draggable", "editable", "visible", "path"].forEach(k => {
+        this.$watch(k, nv => {
+          this.$polyline[`set${k.charAt(0).toUpperCase() + k.slice(1)}`](nv);
+        });
       });
-      polyline.setMap(this.$map);
-    }
+      this.$polyline = new google.maps.Polyline(options);
+      this.$polyline.setMap(this.$map);
+      this.registerEvents();
+    },
+    registerEvents() {
+      const path = this.$polyline.getPath();
+      path.addListener("insert_at", o => {
+        this.$emit("change", path);
+      });
+      path.addListener("remove_at", o => {
+        this.$emit("change", path);
+      });
+      path.addListener("set_at", o => {
+        this.$emit("change", path);
+      });
+      const events = this.events;
+      if (!events) return;
+      for (let eventName in events) {
+        if (eventName) this.$Polyline.addListener(eventName, events[eventName]);
+      }
+    },
   }
 };
 </script>

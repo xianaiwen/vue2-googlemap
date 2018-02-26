@@ -9,7 +9,34 @@ export default {
     return {};
   },
   props: {
-    paths: Array
+    paths: Array,
+    clickable: {
+      type: Boolean,
+      default: true
+    },
+    draggable: {
+      type: Boolean,
+      default: false
+    },
+    editable: {
+      type: Boolean,
+      default: false
+    },
+    fillColor: String,
+    fillOpacity: {
+      type: Number,
+      default: 1.0
+    },
+    geodesic: Boolean,
+    strokeColor: String,
+    strokeOpacity: String,
+    strokeWeight: String,
+    visible: {
+      type: Boolean,
+      default: true
+    },
+    zIndex: Number,
+    events: Object
   },
   mounted() {
     this.$map = this.$map || this.$parent.$map;
@@ -22,12 +49,45 @@ export default {
       });
     }
   },
+  destroyed() {
+    this.$polygon.setMap(null);
+    google.maps.event.clearInstanceListeners(this.$polygon);
+  },
   methods: {
     createPolygon() {
-      const polylgon = new google.maps.Polygon({
-        paths: this.paths
+      const options = {};
+      for (let key in this.$props) {
+        if (this.$props[key] !== undefined) {
+          Object.assign(options, { [key]: this.$props[key] });
+        }
+      }
+      ["draggable", "editable", "visible", "paths"].forEach(k => {
+        this.$watch(k, nv => {
+          this.$polygon[`set${k.charAt(0).toUpperCase() + k.slice(1)}`](nv);
+        });
       });
-      polylgon.setMap(this.$map);
+      this.$polygon = new google.maps.Polygon(options);
+      this.$polygon.setMap(this.$map);
+      this.registerEvents();
+    },
+    registerEvents() {
+      const paths = this.$polygon.getPaths();
+      paths.forEach(p => {
+        p.addListener("insert_at", o => {
+          this.$emit("change", paths);
+        });
+        p.addListener("remove_at", o => {
+          this.$emit("change", paths);
+        });
+        p.addListener("set_at", o => {
+          this.$emit("change", paths);
+        });
+      });
+      const events = this.events;
+      if (!events) return;
+      for (let eventName in events) {
+        if (eventName) this.$polygon.addListener(eventName, events[eventName]);
+      }
     }
   }
 };

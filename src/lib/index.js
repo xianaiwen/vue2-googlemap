@@ -4,8 +4,18 @@ import marker from './components/googlemap-marker.vue';
 import polyline from './components/googlemap-polyline.vue';
 import polygon from './components/googlemap-polygon.vue';
 import circle from './components/googlemap-circle.vue';
+import rectangle from './components/googlemap-rectangle.vue';
+import infoWindow from './components/googlemap-infoWindow.vue';
 
-const components = [googlemap, marker, polyline, polygon, circle]
+const components = [
+  googlemap,
+  marker,
+  polyline,
+  polygon,
+  circle,
+  rectangle,
+  infoWindow
+];
 
 const vueGoogleMap = {
   initGooglemap,
