@@ -1,7 +1,7 @@
 {
   "name": "vue2-googlemap",
   "description": "基于 Vue 2.x 和google地图的地图组件",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "xianaiwen",
   "license": "MIT",
   "private": false,
