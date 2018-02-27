@@ -20,17 +20,20 @@ const components = [
 const vueGoogleMap = {
   initGooglemap,
   components,
-  installed: false
+  installed: false,
+  install(vue) {
+    if (vueGoogleMap.installed) 
+      return;
+    components.forEach(c => {
+      vue.component(c.name, c)
+    })
+    vueGoogleMap.installed = true;
+  }
 }
 
-vueGoogleMap.install = (vue) => {
-  if (vueGoogleMap.installed) 
-    return;
-  components.forEach(c => {
-    vue.component(c.name, c)
-  })
-  vueGoogleMap.installed = true;
-}
+// vueGoogleMap.install = (vue) => {   if (vueGoogleMap.installed)     return;
+// components.forEach(c => {     vue.component(c.name, c)   })
+// vueGoogleMap.installed = true; }
 
 if (typeof window !== 'undefined' && window.Vue) {
   window

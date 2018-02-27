@@ -8,7 +8,9 @@ module.exports = {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'vue2-googlemap.js',
-    library: 'vueGooglemap'
+    library: 'vueGooglemap',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
   },
   module: {
     rules: [
@@ -69,6 +71,6 @@ if (process.env.NODE_ENV === 'production') {
           warnings: false
         }
       }),
-    new webpack.LoaderOptionsPlugin({minimize: true})
+    new webpack.LoaderOptionsPlugin({minimize: false})
   ])
 }
