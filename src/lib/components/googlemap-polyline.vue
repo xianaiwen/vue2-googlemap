@@ -24,8 +24,8 @@ export default {
     },
     geodesic: Boolean,
     strokeColor: String,
-    strokeOpacity: String,
-    strokeWeight: String,
+    strokeOpacity: Number,
+    strokeWeight: Number,
     visible: {
       type: Boolean,
       default: true
@@ -79,7 +79,7 @@ export default {
       const events = this.events;
       if (!events) return;
       for (let eventName in events) {
-        if (eventName) this.$Polyline.addListener(eventName, events[eventName]);
+        if (eventName) this.$polyline.addListener(eventName, events[eventName]);
       }
     },
   }

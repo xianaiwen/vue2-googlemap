@@ -26,11 +26,11 @@ export default {
       default: false
     },
     fillColor: String,
-    fillOpacity: String,
+    fillOpacity: Number,
     radius: Number,
     strokeColor: String,
-    strokeOpacity: String,
-    strokeWeight: String,
+    strokeOpacity: Number,
+    strokeWeight: Number,
     visible: {
       type: Boolean,
       default: true

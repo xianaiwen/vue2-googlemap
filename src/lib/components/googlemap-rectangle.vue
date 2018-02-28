@@ -28,8 +28,8 @@ export default {
       default: 1.0
     },
     strokeColor: String,
-    strokeOpacity: String,
-    strokeWeight: String,
+    strokeOpacity: Number,
+    strokeWeight: Number,
     visible: {
       type: Boolean,
       default: true

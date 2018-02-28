@@ -29,8 +29,8 @@ export default {
     },
     geodesic: Boolean,
     strokeColor: String,
-    strokeOpacity: String,
-    strokeWeight: String,
+    strokeOpacity: Number,
+    strokeWeight: Number,
     visible: {
       type: Boolean,
       default: true

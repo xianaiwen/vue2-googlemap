@@ -10,6 +10,10 @@ export default {
   },
   props: {
     content: String,
+    disableAutoPan: {
+      type: Boolean,
+      default: true,
+    },
     maxWidth: Number,
     pixelOffset: Array,
     position: [Array, Object],
@@ -64,6 +68,7 @@ export default {
         });
       });
       this.$window = new google.maps.InfoWindow(options);
+      this.registerEvents();
     },
     registerEvents() {
       this.$window.addListener("content_changed", o => {
@@ -93,8 +98,11 @@ export default {
         if (eventName) this.$window.addListener(eventName, events[eventName]);
       }
     },
-    open() {
-      this.$window.open(this.$map);
+    open(o) {
+      o ? this.$window.open(this.$map, o) : this.$window.open(this.$map);
+    },
+    close() {
+      this.$window.close()
     }
   }
 };

@@ -21,7 +21,7 @@ export default {
       type: Boolean,
       default: false
     },
-    icon: String,
+    icon: [String, Object],
     label: String,
     title: String,
     opacity: {
