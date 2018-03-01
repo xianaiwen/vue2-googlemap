@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <el-row  class="manger-content">
+    <div class="manger-content">
       <sideBar></sideBar>
       <!-- <transition name="el-fade-in-linear"> -->
         <router-view></router-view>
       <!-- </transition> -->
-    </el-row>
+    </div>
   </div>
 </template>
 
